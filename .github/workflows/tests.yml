@@ -83,6 +83,7 @@ jobs:
           python dev/patch_doctest.py && \
           echo -e "\e[1;34m Set CFLAGS \e[0m" && \
           export CFLAGS="--coverage -O0" && \
+          echo -e "\e[1;34m Run Tests \e[0m" && \
           python setup.py install && \
           python -m doctest fastnumbers && \
           pytest --hypothesis-profile=slow-tests --doctest-glob=README.rst && \
