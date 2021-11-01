@@ -70,16 +70,18 @@ jobs:
         id: qemu
         uses: docker/setup-qemu-action@v1
 
-      - name: Build wheel for aarch64
+      - name: Run tests on aarch64
         run: |
           docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
           ${{ env.img }} \
           bash -exc '${{ env.py }} -m venv .env && \
           source .env/bin/activate && \
+          echo -e "\e[1;34m Install Dependencies \e[0m" && \
           python -m pip install --upgrade pip && \
           python -m pip install pytest pytest-faulthandler hypothesis && \
+          echo -e "\e[1;34m Patch Doctests \e[0m" && \
           python dev/patch_doctest.py && \
-          echo "Set CFLAGS" && \
+          echo -e "\e[1;34m Set CFLAGS \e[0m" && \
           export CFLAGS="--coverage -O0" && \
           python setup.py install && \
           python -m doctest fastnumbers && \
